@@ -3,7 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using JwtLoginSystem.Services;
 using JwtLoginSystem.Data;
-
+using JwtLoginSystem.Repositories;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container
@@ -40,9 +40,15 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 
-// Register custom services
-builder.Services.AddScoped<IAuthService, AuthService>();
+// Database
 builder.Services.AddScoped<DatabaseContext>();
+
+// Repositories (Database Layer)
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IPatientRepository, PatientRepository>();
+
+// Services (Business Logic Layer)
+builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IPatientService, PatientService>();
 
 // Configure JWT Authentication
